@@ -1,5 +1,6 @@
 from utils.dbconfig import dbconfig
 import utils.aesutil
+import utils.generate
 from getpass import getpass
 
 from Crypto.Protocol.KDF import PBKDF2
@@ -7,23 +8,20 @@ from Crypto.Hash import SHA512
 from Crypto.Random import get_random_bytes
 import base64
 
-import random
-import string
-
 from rich import print as printc
 from rich.console import Console
 
-def generatePassword (passLength):
-    password = string.ascii_letters + string.digits + "!@#$%^&*()_+=-./?><|\}{[]"
-    #generating characters, numbers and letters for password
-    passwordList = []
-    #password list is for putting all the selected password units into a string and show them to user
-    for passChar in range(passLength):
-        passRandom = random.choice(password)
-        passwordList.append(passRandom)
+# def generatePassword (passLength):
+#     password = string.ascii_letters + string.digits + "!@#$%^&*()_+=-./?><|\}{[]"
+#     #generating characters, numbers and letters for password
+#     passwordList = []
+#     #password list is for putting all the selected password units into a string and show them to user
+#     for passChar in range(passLength):
+#         passRandom = random.choice(password)
+#         passwordList.append(passRandom)
 
-    finalOutput = "".join(passwordList)
-    return finalOutput
+#     finalOutput = "".join(passwordList)
+#     return finalOutput
 
 def computeMasterKey(mp,ds):
 	password = mp.encode()
@@ -58,7 +56,8 @@ def addEntry(mp, ds, sitename, siteurl, email, username):
 	else:
 		print('hello, Welcome to Password generator!')
 		length = int(input('\nEnter the length of password: '))
-		password = generatePassword(length)
+		password = utils.generate.generatePassword(length)
+		printc("[green][+][/green] Password generated!")
 
 	# compute master key
 	mk = computeMasterKey(mp,ds)
